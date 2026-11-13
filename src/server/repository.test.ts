@@ -1,6 +1,7 @@
 import { afterEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createServer } from 'node:http';
 import { resolve } from 'node:path';
 import { VipRepository } from './repository';
 
@@ -110,15 +111,30 @@ describe('VipRepository Supabase persistence', () => {
     process.env.NODE_ENV = 'production';
     try {
       const { default: app } = await import('../../server');
+      const { default: vercelHandler } = await import('../../api/[...path]');
       assert.equal(typeof app, 'function');
+      assert.equal(vercelHandler, app);
       const routePaths = (app as any)._router.stack
         .flatMap((layer: any) => layer.route ? [layer.route.path] : []);
       assert.ok(routePaths.includes('/api/public/store/:slug'));
       assert.ok(routePaths.includes('/api/admin/verify-admin-session'));
       const config = JSON.parse(readFileSync(resolve(process.cwd(), 'vercel.json'), 'utf8'));
       assert.equal(config.outputDirectory, 'dist');
+      assert.deepEqual(config.rewrites[0], { source: '/api/:path*', destination: '/api/:path*' });
       assert.ok(config.rewrites.some((rewrite: any) => rewrite.source === '/vip/:path*' && rewrite.destination === '/index.html'));
       assert.ok(config.rewrites.some((rewrite: any) => rewrite.source === '/admin' && rewrite.destination === '/index.html'));
+
+      const server = createServer(vercelHandler);
+      await new Promise<void>((resolveListen) => server.listen(0, '127.0.0.1', resolveListen));
+      try {
+        const address = server.address();
+        assert.ok(address && typeof address !== 'string');
+        const response = await fetch(`http://127.0.0.1:${address.port}/api/admin/verify-admin-session`, { method: 'POST' });
+        assert.equal(response.status, 401);
+        assert.deepEqual(await response.json(), { error: 'Authentication required.' });
+      } finally {
+        await new Promise<void>((resolveClose, rejectClose) => server.close((error) => error ? rejectClose(error) : resolveClose()));
+      }
     } finally {
       if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
       else process.env.NODE_ENV = previousNodeEnv;
