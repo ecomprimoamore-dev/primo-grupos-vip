@@ -112,7 +112,7 @@ describe('VipRepository Supabase persistence', () => {
     try {
       const { createApp } = await import('../../server');
       const app = await createApp();
-      const { default: vercelHandler } = await import('../../api/express');
+      const { default: vercelHandler } = await import('./vercel-handler');
       assert.equal(typeof app, 'function');
       assert.equal(typeof vercelHandler, 'function');
       const routePaths = (app as any)._router.stack
@@ -126,6 +126,10 @@ describe('VipRepository Supabase persistence', () => {
       });
       assert.ok(config.rewrites.some((rewrite: any) => rewrite.source === '/vip/:path*' && rewrite.destination === '/index.html'));
       assert.ok(config.rewrites.some((rewrite: any) => rewrite.source === '/admin' && rewrite.destination === '/index.html'));
+
+      const serverlessBundle = readFileSync(resolve(process.cwd(), 'api/express.js'), 'utf8');
+      assert.doesNotMatch(serverlessBundle, /from ['"]\.\.\/server['"]/);
+      assert.match(serverlessBundle, /createApp/);
 
       const server = createServer(vercelHandler);
       await new Promise<void>((resolveListen) => server.listen(0, '127.0.0.1', resolveListen));

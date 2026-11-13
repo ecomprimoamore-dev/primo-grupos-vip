@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "node --require ./scripts/node-userinfo-compat.cjs --import tsx server.ts",
-    "build": "vite build",
+    "build": "node scripts/build-vercel-api.mjs && vite build",
     "preview": "vite preview",
     "start": "node --require ./scripts/node-userinfo-compat.cjs --import tsx server.ts",
     "clean": "rm -rf dist server.js",

@@ -1,13 +1,9 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { createApp } from '../server';
+import { createApp } from '../../server';
 
 type VercelRequest = IncomingMessage & { url?: string };
 
-/**
- * Vercel rewrites every public /api/:path* request to this concrete function,
- * carrying its original path in __path. Restore the Express URL so existing
- * route matching, methods, request bodies, and query strings remain unchanged.
- */
+/** Restore the original /api path passed through the Vercel rewrite. */
 let appPromise: ReturnType<typeof createApp> | undefined;
 
 export default async function handler(req: VercelRequest, res: ServerResponse) {
