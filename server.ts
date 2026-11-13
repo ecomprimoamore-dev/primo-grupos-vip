@@ -389,8 +389,10 @@ export async function createApp() {
   return app;
 }
 
-// Local execution opens a listener; Vercel's /api/express function calls createApp lazily.
-if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+// Local execution opens a listener; Vercel's function bundle must never call listen().
+const isVercelRuntime = process.env.VERCEL === '1' || Boolean(process.env.VERCEL_ENV);
+if (!isVercelRuntime && process.env.NODE_ENV !== 'production' &&
+  process.argv[1] && path.resolve(process.argv[1]) === __filename) {
   const PORT = Number(process.env.PORT) || 3000;
   createApp().then((app) => {
     app.listen(PORT, '0.0.0.0', () => {
