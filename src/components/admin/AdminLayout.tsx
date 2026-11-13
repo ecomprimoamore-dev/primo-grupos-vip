@@ -63,11 +63,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
           {/* Zone 1: Brand Wordmark (Single text element) */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center p-1 shadow-xs shrink-0 overflow-hidden">
-              <img src="/app-logo.png" alt="PRIMO GRUPOS VIP" className="w-full h-full object-contain" />
-            </div>
+            <img src="/app-logo.png" alt="PRIMO GRUPOS VIP" className="w-10 h-10 shrink-0 object-contain" />
             <span className="text-base font-bold tracking-tight text-slate-900 whitespace-nowrap">
-              Sistema de Grupos VIP
+              Grupos Primo
             </span>
           </div>
 
@@ -82,7 +80,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
               }`}
             >
               <BarChart3 className="w-3.5 h-3.5" />
-              <span>Visão Geral & Relatórios</span>
+              <span>Visão geral</span>
             </button>
 
             <button
@@ -94,7 +92,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
               }`}
             >
               <Building2 className="w-3.5 h-3.5" />
-              <span>Gerenciar Lojas</span>
+              <span>Lojas</span>
             </button>
 
             <button
@@ -106,7 +104,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>Grupos & Distribuição</span>
+              <span>Grupos</span>
             </button>
 
             <button
@@ -164,7 +162,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
               }`}
             >
               <BarChart3 className="w-4 h-4" />
-              <span>Visão Geral & Relatórios</span>
+              <span>Visão geral</span>
             </button>
             <button
               onClick={() => {
@@ -176,7 +174,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
               }`}
             >
               <Building2 className="w-4 h-4" />
-              <span>Gerenciar Lojas</span>
+              <span>Lojas</span>
             </button>
             <button
               onClick={() => {
@@ -188,7 +186,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
               }`}
             >
               <Layers className="w-4 h-4" />
-              <span>Grupos & Distribuição</span>
+              <span>Grupos</span>
             </button>
             <button
               onClick={() => {
