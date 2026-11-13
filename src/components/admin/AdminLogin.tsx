@@ -38,7 +38,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
         <div className="bg-white border border-slate-200/90 rounded-3xl p-7 sm:p-9 shadow-sm relative overflow-hidden">
           {/* Header */}
           <div className="text-center mb-7">
-            <div className="w-16 h-16 bg-white border border-slate-200/90 rounded-2xl flex items-center justify-center mx-auto mb-3.5 p-2 shadow-xs">
+            <div className="w-16 h-16 flex items-center justify-center mx-auto mb-3.5 p-2">
               <img src="/app-logo.png" alt="PRIMO GRUPOS VIP" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-950">
