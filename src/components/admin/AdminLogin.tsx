@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Lock, Mail, Loader2, ShieldCheck, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Lock, Mail, Loader2, ShieldCheck, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { api } from '../../services/api';
 
 interface AdminLoginProps {
   onLoginSuccess: (user: any) => void;
-  onBackToPublic: () => void;
 }
 
-export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackToPublic }) => {
+export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -34,24 +33,13 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-slate-900 flex flex-col justify-between p-4 sm:p-6 selection:bg-emerald-500 selection:text-white">
-      {/* Top back navigation */}
-      <div className="max-w-md mx-auto w-full pt-2 sm:pt-4">
-        <button
-          onClick={onBackToPublic}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-200/90 px-3 py-1.5 rounded-xl transition-colors shadow-xs cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Voltar para página pública</span>
-        </button>
-      </div>
-
       {/* Main Login Card - Clean Light Theme */}
       <div className="max-w-md w-full mx-auto my-auto py-6">
         <div className="bg-white border border-slate-200/90 rounded-3xl p-7 sm:p-9 shadow-sm relative overflow-hidden">
           {/* Header */}
           <div className="text-center mb-7">
             <div className="w-16 h-16 bg-white border border-slate-200/90 rounded-2xl flex items-center justify-center mx-auto mb-3.5 p-2 shadow-xs">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+              <img src="/app-logo.png" alt="PRIMO GRUPOS VIP" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-950">
               Painel Administrativo

@@ -64,7 +64,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ onLogout, onNavigateTo
           {/* Zone 1: Brand Wordmark (Single text element) */}
           <div className="flex items-center gap-2.5 shrink-0">
             <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center p-1 shadow-xs shrink-0 overflow-hidden">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+              <img src="/app-logo.png" alt="PRIMO GRUPOS VIP" className="w-full h-full object-contain" />
             </div>
             <span className="text-base font-bold tracking-tight text-slate-900 whitespace-nowrap">
               Sistema de Grupos VIP

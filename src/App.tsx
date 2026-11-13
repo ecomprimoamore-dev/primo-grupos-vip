@@ -111,7 +111,6 @@ export default function App() {
             setIsAdminAuthenticated(true);
             navigateTo('/admin');
           }}
-          onBackToPublic={() => navigateTo(`/vip/${stores[0]?.slug || 'barigui'}`)}
         />
       );
     }
@@ -136,7 +135,6 @@ export default function App() {
         setIsAdminAuthenticated(true);
         navigateTo('/admin');
       }}
-      onBackToPublic={() => navigateTo(`/vip/${stores[0]?.slug || 'barigui'}`)}
     />
   );
 }
