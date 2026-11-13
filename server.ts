@@ -389,13 +389,15 @@ export async function createApp() {
   return app;
 }
 
-const app = await createApp();
-export default app;
-
-// Vercel imports the Express application directly; only local execution opens a listener.
+// Local execution opens a listener; Vercel's /api/express function calls createApp lazily.
 if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
   const PORT = Number(process.env.PORT) || 3000;
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Sistema VIP] Servidor rodando na porta ${PORT}`);
+  createApp().then((app) => {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`[Sistema VIP] Servidor rodando na porta ${PORT}`);
+    });
+  }).catch((err) => {
+    console.error('[Sistema VIP] Falha crítica ao iniciar servidor:', err?.name || 'unknown');
+    process.exit(1);
   });
 }

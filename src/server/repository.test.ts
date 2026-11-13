@@ -110,7 +110,8 @@ describe('VipRepository Supabase persistence', () => {
     const previousNodeEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = 'production';
     try {
-      const { default: app } = await import('../../server');
+      const { createApp } = await import('../../server');
+      const app = await createApp();
       const { default: vercelHandler } = await import('../../api/express');
       assert.equal(typeof app, 'function');
       assert.equal(typeof vercelHandler, 'function');
