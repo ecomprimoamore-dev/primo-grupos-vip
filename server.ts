@@ -3,7 +3,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import QRCode from 'qrcode';
-import { createServer as createViteServer } from 'vite';
 import { createRepository, repository, RepositoryError } from './src/server/repository';
 import { getAuthorizedAdmin, isServerSupabaseConfigured } from './src/lib/supabase/server';
 
@@ -371,6 +370,9 @@ export async function createApp() {
   // ==========================================
 
   if (process.env.NODE_ENV !== 'production') {
+    // Vite is a development dependency and must not be loaded when the API function starts.
+    const viteModuleName = 'vite';
+    const { createServer: createViteServer } = await import(viteModuleName);
     const vite = await createViteServer({
       server: {
         middlewareMode: true,
