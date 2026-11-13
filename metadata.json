@@ -1,0 +1,7 @@
+{
+  "name": "Sistema de Grupos VIP",
+  "description": "Captação de clientes de lojas físicas via QR Code e direcionamento inteligente para grupos VIP no WhatsApp com distribuição automática.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

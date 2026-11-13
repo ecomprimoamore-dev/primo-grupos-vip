@@ -1,0 +1,159 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #fafafa;
+  color: #0f172a;
+}
+
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('/fonts/GreatVibes-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+
+.vip-a5-title-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: 48px;
+  line-height: 1;
+}
+
+.vip-a5-display {
+  gap: 0;
+}
+
+.vip-a5-content {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.vip-a5-title-block {
+  flex: 0 0 auto;
+}
+
+.vip-a5-footer {
+  flex: 0 0 auto;
+}
+
+@media print {
+  @page {
+    size: A5 portrait;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 148mm !important;
+    height: 210mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #fff !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .vip-a5-display,
+  .vip-a5-display * {
+    visibility: visible !important;
+  }
+
+  .vip-a5-display {
+    position: fixed !important;
+    top: 5mm !important;
+    left: 5mm !important;
+    display: flex !important;
+    width: 138mm !important;
+    height: 200mm !important;
+    max-width: none !important;
+    aspect-ratio: auto !important;
+    box-sizing: border-box !important;
+    padding: 9mm 12mm !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+    border: 0.8mm solid #263e35 !important;
+    border-radius: 3mm !important;
+    background: #fafafa !important;
+    box-shadow: none !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .vip-a5-logo {
+    width: 90mm !important;
+    max-height: 26mm !important;
+    margin-bottom: 0 !important;
+    object-fit: contain !important;
+  }
+
+  .vip-a5-store {
+    font-size: 3mm !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .vip-a5-title-intro {
+    margin-top: 0 !important;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 6.5mm !important;
+    font-weight: 400 !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.025em !important;
+  }
+
+  .vip-a5-title-script {
+    margin-top: 2mm !important;
+    color: #8fafc5 !important;
+    font-size: 22mm !important;
+    line-height: 1.05 !important;
+  }
+
+  .vip-a5-copy {
+    max-width: 102mm !important;
+    margin-top: 0 !important;
+    font-size: 3.7mm !important;
+    line-height: 1.4 !important;
+  }
+
+  .vip-a5-qr-frame {
+    flex: 0 0 auto !important;
+    padding: 3mm !important;
+    border-radius: 3mm !important;
+    box-shadow: none !important;
+  }
+
+  .vip-a5-qr {
+    width: 64mm !important;
+    height: 64mm !important;
+  }
+
+  .vip-a5-instruction {
+    padding: 2mm 4mm !important;
+    font-size: 3.5mm !important;
+  }
+
+  .vip-a5-instruction svg {
+    width: 4mm !important;
+    height: 4mm !important;
+  }
+
+  .vip-a5-url {
+    display: none !important;
+  }
+}
