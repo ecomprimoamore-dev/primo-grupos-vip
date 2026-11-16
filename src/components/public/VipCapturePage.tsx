@@ -248,7 +248,7 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug }) => {
               {/* Discreet Privacy / Visibility Notice */}
               <div className="vip-public-privacy mt-4 text-center">
                 <p className="text-xs text-slate-600 leading-relaxed max-w-xs mx-auto">
-                  Ao entrar no grupo, você declara estar ciente e de acordo com os Termos de Uso e a{' '}
+                  Ao entrar, você aceita os Termos de Uso e a{' '}
                   <a
                     href="https://www.primoamore.com.br/politica-de-privacidade/"
                     target="_blank"
@@ -257,7 +257,7 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug }) => {
                   >
                     Política de Privacidade
                   </a>
-                  , incluindo a possibilidade de seu número de telefone ficar visível para outros participantes do WhatsApp.
+                  {' '}e concorda que seu número poderá ficar visível aos participantes.
                 </p>
               </div>
             </div>
