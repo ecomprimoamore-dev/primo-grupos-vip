@@ -96,8 +96,6 @@ export default function App() {
       <VipCapturePage
         slug={slug}
         onNavigateToAdmin={() => navigateTo(isAdminAuthenticated ? '/admin' : '/')}
-        onSelectStore={(newSlug) => navigateTo(`/vip/${newSlug}`)}
-        allStores={stores.map((s) => ({ slug: s.slug, name: s.name }))}
       />
     );
   }
