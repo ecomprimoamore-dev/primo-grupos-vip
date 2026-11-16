@@ -130,12 +130,6 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug }) => {
                   <span>Unidade {storeData.name}</span>
                 </div>
 
-                {/* Primary Title */}
-                <h1 className="vip-public-title flex flex-col items-center font-bold text-slate-950 tracking-tight leading-tight">
-                  <span className="block whitespace-nowrap text-[clamp(1.125rem,5.6vw,1.375rem)]">Entre para o nosso</span>
-                  <span className="block whitespace-nowrap text-[clamp(1.125rem,5.6vw,1.375rem)]">Grupo VIP!</span>
-                </h1>
-
                 {/* Subtitle / Description */}
                 <p className="vip-public-description text-[13px] min-[375px]:text-sm text-slate-600 mt-2.5 leading-relaxed max-w-sm mx-auto">
                   {storeData.description ||
