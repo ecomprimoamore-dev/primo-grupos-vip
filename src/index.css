@@ -58,11 +58,13 @@ body {
 @media (max-width: 639px) {
   .vip-public-main {
     padding-block: clamp(12px, 2.1dvh, 20px);
+    padding-inline: 8px;
   }
 
   .vip-public-card {
     box-sizing: border-box;
-    padding: clamp(10px, 2dvh, 16px) !important;
+    padding-block: clamp(10px, 2dvh, 16px) !important;
+    padding-inline: 12px !important;
     border-radius: 18px;
   }
 
