@@ -95,7 +95,6 @@ export default function App() {
     return (
       <VipCapturePage
         slug={slug}
-        onNavigateToAdmin={() => navigateTo(isAdminAuthenticated ? '/admin' : '/')}
       />
     );
   }

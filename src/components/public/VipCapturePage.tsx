@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Sparkles, Flame, CheckCircle, ShieldAlert, ArrowRight, Loader2, Store as StoreIcon, ExternalLink } from 'lucide-react';
+import { Tag, Sparkles, Flame, CheckCircle, ShieldAlert, ArrowRight, Loader2, ExternalLink } from 'lucide-react';
 import { api } from '../../services/api';
 
 interface VipCapturePageProps {
   slug: string;
-  onNavigateToAdmin?: () => void;
 }
 
-export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug, onNavigateToAdmin }) => {
+export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug }) => {
   const [storeData, setStoreData] = useState<{
     id: string;
     name: string;
@@ -85,20 +84,9 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug, onNavigate
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
-      {onNavigateToAdmin && (
-        <div className="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-2.5 flex justify-end text-xs text-slate-500">
-          <button
-            onClick={onNavigateToAdmin}
-            className="flex items-center gap-1.5 px-3 py-1 font-medium text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200 rounded transition-colors"
-          >
-            <StoreIcon className="w-3.5 h-3.5 text-slate-500" />
-            <span>Painel Admin</span>
-          </button>
-        </div>
-      )}
+    <div className="vip-public-page min-h-[100dvh] bg-[#FAFAFA] text-slate-900 flex flex-col selection:bg-emerald-500 selection:text-white">
       {/* Main Public Capture Container */}
-      <main className="flex-1 flex items-center justify-center px-3 py-6 min-[375px]:px-4 sm:py-10 md:py-16">
+      <main className="vip-public-main flex-1 flex items-center justify-center px-3 py-6 min-[375px]:px-4 sm:py-10 md:py-16">
         <div className="w-full max-w-md mx-auto">
           {loading ? (
             <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 min-[375px]:p-8 text-center flex flex-col items-center justify-center min-h-[320px] sm:min-h-[380px]">
@@ -126,77 +114,77 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug, onNavigate
               </p>
             </div>
           ) : storeData ? (
-            <div className="bg-white rounded-3xl border border-slate-200/70 shadow-sm p-4 min-[375px]:p-5 sm:p-9 relative transition-all">
+            <div className="vip-public-card bg-white rounded-3xl border border-slate-200/70 shadow-sm p-4 min-[375px]:p-5 sm:p-9 relative transition-all">
               {/* Top Unit Pill & Brand Logo */}
-              <div className="text-center mb-5 sm:mb-6">
+              <div className="vip-public-heading text-center mb-5 sm:mb-6">
                 {/* Brand Logo */}
                 <img
                   src="/primo-amore-logo.png"
                   alt="Primo Amore"
-                  className="block w-full max-w-[250px] h-auto max-h-16 object-contain mx-auto mb-4 min-[375px]:max-h-[4.5rem]"
+                  className="vip-public-logo block w-full max-w-[250px] h-auto max-h-16 object-contain mx-auto mb-4 min-[375px]:max-h-[4.5rem]"
                 />
 
                 {/* Unit identification */}
-                <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 uppercase tracking-widest mb-1.5">
+                <div className="vip-public-unit inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 uppercase tracking-widest mb-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                   <span>Unidade {storeData.name}</span>
                 </div>
 
                 {/* Primary Title */}
-                <h1 className="flex flex-col items-center font-bold text-slate-950 tracking-tight leading-tight">
+                <h1 className="vip-public-title flex flex-col items-center font-bold text-slate-950 tracking-tight leading-tight">
                   <span className="block whitespace-nowrap text-[clamp(1.125rem,5.6vw,1.375rem)]">Entre para o nosso</span>
                   <span className="block whitespace-nowrap text-[clamp(1.125rem,5.6vw,1.375rem)]">Grupo VIP!</span>
                 </h1>
 
                 {/* Subtitle / Description */}
-                <p className="text-[13px] min-[375px]:text-sm text-slate-600 mt-2.5 leading-relaxed max-w-sm mx-auto">
+                <p className="vip-public-description text-[13px] min-[375px]:text-sm text-slate-600 mt-2.5 leading-relaxed max-w-sm mx-auto">
                   {storeData.description ||
                     'Receba ofertas exclusivas, promoções especiais e lançamentos em primeira mão.'}
                 </p>
               </div>
 
               {/* 3 Mandatory Benefits */}
-              <div className="space-y-2.5 min-[375px]:space-y-3.5 my-5 min-[375px]:my-6 sm:my-7 pt-2 border-t border-slate-100">
+              <div className="vip-public-benefits space-y-2.5 min-[375px]:space-y-3.5 my-5 min-[375px]:my-6 sm:my-7 pt-2 border-t border-slate-100">
                 {/* Benefit 1 */}
-                <div className="flex items-start gap-3 p-2.5 min-[375px]:p-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="vip-public-benefit flex items-start gap-3 p-2.5 min-[375px]:p-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 transition-colors">
+                  <div className="vip-public-benefit-icon w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
                     <Tag className="w-4 h-4" />
                   </div>
                   <div>
                     <h2 className="text-sm font-semibold text-slate-900 leading-tight">
                       Ofertas exclusivas
                     </h2>
-                    <p className="text-[13px] text-slate-600 mt-0.5 leading-snug">
+                    <p className="vip-public-benefit-copy text-[13px] text-slate-600 mt-0.5 leading-snug">
                       Preços especiais e condições diferenciadas reservadas somente aos membros.
                     </p>
                   </div>
                 </div>
 
                 {/* Benefit 2 */}
-                <div className="flex items-start gap-3 p-2.5 min-[375px]:p-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="vip-public-benefit flex items-start gap-3 p-2.5 min-[375px]:p-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 transition-colors">
+                  <div className="vip-public-benefit-icon w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
                     <h2 className="text-sm font-semibold text-slate-900 leading-tight">
                       Novidades em primeira mão
                     </h2>
-                    <p className="text-[13px] text-slate-600 mt-0.5 leading-snug">
+                    <p className="vip-public-benefit-copy text-[13px] text-slate-600 mt-0.5 leading-snug">
                       Seja notificado sobre novos produtos e coleções antes do público geral.
                     </p>
                   </div>
                 </div>
 
                 {/* Benefit 3 */}
-                <div className="flex items-start gap-3 p-2.5 min-[375px]:p-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="vip-public-benefit flex items-start gap-3 p-2.5 min-[375px]:p-3 rounded-xl bg-slate-50/70 hover:bg-slate-50 transition-colors">
+                  <div className="vip-public-benefit-icon w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
                     <Flame className="w-4 h-4" />
                   </div>
                   <div>
                     <h2 className="text-sm font-semibold text-slate-900 leading-tight">
                       Promoções especiais
                     </h2>
-                    <p className="text-[13px] text-slate-600 mt-0.5 leading-snug">
+                    <p className="vip-public-benefit-copy text-[13px] text-slate-600 mt-0.5 leading-snug">
                       Ações relâmpago e benefícios pensados especialmente para clientes frequentes.
                     </p>
                   </div>
@@ -238,7 +226,7 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug, onNavigate
                 <button
                   onClick={handleJoinClick}
                   disabled={joining}
-                  className="w-full min-h-14 relative group overflow-hidden py-4 px-3 min-[375px]:px-4 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.99] text-white font-extrabold text-[12px] min-[375px]:text-sm sm:text-base tracking-wide rounded-2xl shadow-md shadow-emerald-500/25 transition-all flex items-center justify-center gap-1.5 min-[375px]:gap-2 cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed"
+                  className="vip-public-cta w-full min-h-14 relative group py-4 px-3 min-[375px]:px-4 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.99] text-white font-extrabold text-[12px] min-[375px]:text-sm sm:text-base tracking-wide rounded-2xl shadow-md shadow-emerald-500/25 transition-all flex items-center justify-center gap-1.5 min-[375px]:gap-2 cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed"
                 >
                   {joining ? (
                     <>
@@ -264,7 +252,7 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug, onNavigate
               )}
 
               {/* Discreet Privacy / Visibility Notice */}
-              <div className="mt-4 text-center">
+              <div className="vip-public-privacy mt-4 text-center">
                 <p className="text-xs text-slate-600 leading-relaxed max-w-xs mx-auto">
                   Informação importante: Ao ingressar, o seu número de telefone poderá ficar visível
                   para os demais participantes do grupo no WhatsApp.
@@ -276,7 +264,7 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug, onNavigate
       </main>
 
       {/* Clean Minimal Footer */}
-      <footer className="w-full text-center py-4 px-4 text-xs text-slate-600 border-t border-slate-100">
+      <footer className="vip-public-footer w-full text-center py-4 px-4 text-xs text-slate-600 border-t border-slate-100">
         <span>© {new Date().getFullYear()} Grupo VIP Oficial</span>
         <span className="mx-2">·</span>
         <span>Acesso seguro para clientes presenciais</span>

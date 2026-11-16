@@ -48,6 +48,100 @@ body {
   flex: 0 0 auto;
 }
 
+.vip-public-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 639px) {
+  .vip-public-main {
+    padding-block: clamp(6px, 1.2dvh, 12px);
+  }
+
+  .vip-public-card {
+    box-sizing: border-box;
+    padding: clamp(10px, 2dvh, 16px) !important;
+    border-radius: 18px;
+  }
+
+  .vip-public-heading {
+    margin-bottom: clamp(6px, 1.4dvh, 12px) !important;
+  }
+
+  .vip-public-logo {
+    width: min(100%, 208px);
+    height: clamp(32px, 7dvh, 54px);
+    max-height: none;
+    margin-bottom: clamp(4px, 0.8dvh, 7px);
+    object-fit: contain;
+  }
+
+  .vip-public-unit {
+    margin-bottom: 0.1rem;
+    font-size: clamp(10px, 2.7vw, 12px);
+    letter-spacing: 0.08em;
+  }
+
+  .vip-public-title {
+    font-size: clamp(16px, 4.8vw, 20px) !important;
+    line-height: 1.1;
+  }
+
+  .vip-public-title > span {
+    font-size: inherit !important;
+    white-space: nowrap;
+  }
+
+  .vip-public-description {
+    margin-top: clamp(4px, 0.8dvh, 8px) !important;
+    font-size: clamp(11px, 2.9vw, 13px);
+    line-height: 1.28;
+  }
+
+  .vip-public-benefits {
+    display: grid;
+    gap: clamp(4px, 0.8dvh, 7px) !important;
+    margin-block: clamp(6px, 1.4dvh, 12px) !important;
+    padding-top: clamp(4px, 0.7dvh, 7px) !important;
+  }
+
+  .vip-public-benefit {
+    gap: clamp(7px, 2vw, 10px);
+    padding: clamp(4px, 1dvh, 7px) clamp(8px, 2vw, 10px) !important;
+  }
+
+  .vip-public-benefit-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .vip-public-benefit-copy {
+    font-size: clamp(11px, 2.8vw, 12px);
+    line-height: 1.22;
+  }
+
+  .vip-public-cta {
+    min-height: 44px;
+    padding-block: clamp(9px, 1.4dvh, 13px) !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+  .vip-public-privacy {
+    margin-top: clamp(5px, 1dvh, 9px) !important;
+  }
+
+  .vip-public-privacy p {
+    font-size: clamp(10px, 2.65vw, 11px);
+    line-height: 1.25;
+  }
+
+  .vip-public-footer {
+    display: none;
+  }
+}
+
 @media print {
   @page {
     size: A5 portrait;
