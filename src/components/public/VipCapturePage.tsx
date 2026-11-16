@@ -121,7 +121,7 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug }) => {
                 <img
                   src="/primo-amore-logo.png"
                   alt="Primo Amore"
-                  className="vip-public-logo block w-full max-w-[250px] h-auto max-h-16 object-contain mx-auto mb-4 min-[375px]:max-h-[4.5rem]"
+                  className="vip-public-logo block w-full max-w-[288px] h-auto max-h-[74px] object-contain mx-auto mb-2"
                 />
 
                 {/* Unit identification */}
@@ -248,8 +248,16 @@ export const VipCapturePage: React.FC<VipCapturePageProps> = ({ slug }) => {
               {/* Discreet Privacy / Visibility Notice */}
               <div className="vip-public-privacy mt-4 text-center">
                 <p className="text-xs text-slate-600 leading-relaxed max-w-xs mx-auto">
-                  Informação importante: Ao ingressar, o seu número de telefone poderá ficar visível
-                  para os demais participantes do grupo no WhatsApp.
+                  Ao entrar no grupo, você declara estar ciente e de acordo com os Termos de Uso e a{' '}
+                  <a
+                    href="https://www.primoamore.com.br/politica-de-privacidade/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 decoration-slate-400 hover:text-slate-800"
+                  >
+                    Política de Privacidade
+                  </a>
+                  , incluindo a possibilidade de seu número de telefone ficar visível para outros participantes do WhatsApp.
                 </p>
               </div>
             </div>

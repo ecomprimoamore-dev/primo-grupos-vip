@@ -71,10 +71,10 @@ body {
   }
 
   .vip-public-logo {
-    width: min(100%, 208px);
-    height: clamp(32px, 7dvh, 54px);
+    width: min(100%, 240px);
+    height: clamp(37px, 8.05dvh, 62px);
     max-height: none;
-    margin-bottom: clamp(4px, 0.8dvh, 7px);
+    margin-bottom: clamp(2px, 0.35dvh, 4px);
     object-fit: contain;
   }
 
