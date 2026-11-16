@@ -277,7 +277,7 @@ export const QrCodeManager: React.FC<QrCodeManagerProps> = ({ stores, initialSlu
                   <h4 className="vip-a5-title-intro font-serif text-[15px] font-normal tracking-[0.035em] text-[#273b32]">
                     Entre para o nosso
                   </h4>
-                  <div className="vip-a5-title-script mt-1.5 font-normal text-[#8FAFC5]">
+                  <div className="vip-a5-title-script mt-1.5 font-normal text-[#0B2E6B]">
                     Grupo Vip
                   </div>
                 </div>
