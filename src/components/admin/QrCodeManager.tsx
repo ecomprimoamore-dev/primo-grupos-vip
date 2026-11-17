@@ -282,7 +282,8 @@ export const QrCodeManager: React.FC<QrCodeManagerProps> = ({ stores, initialSlu
                   </div>
                 </div>
                   <p className="vip-a5-copy max-w-[250px] text-[11px] leading-relaxed text-[#59645e]">
-                    Receba ofertas exclusivas e lançamentos em primeira mão no seu WhatsApp
+                    Receba ofertas exclusivas e lançamentos<br />
+                    em primeira mão no seu WhatsApp
                   </p>
 
                 {/* QR Code Canvas / Image */}
