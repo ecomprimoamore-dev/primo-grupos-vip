@@ -6,12 +6,9 @@ import {
   Edit2,
   Trash2,
   RotateCcw,
-  Sparkles,
-  Sliders,
   ExternalLink,
   CheckCircle,
   AlertTriangle,
-  Play,
   Loader2,
   Info,
   Check,
@@ -44,10 +41,6 @@ export const GroupManager: React.FC<GroupManagerProps> = ({
   const [clickLimit, setClickLimit] = useState(800);
   const [displayOrder, setDisplayOrder] = useState(1);
   const [isActive, setIsActive] = useState(true);
-
-  // Simulation State
-  const [simulating, setSimulating] = useState(false);
-  const [simulationResult, setSimulationResult] = useState<string | null>(null);
 
   const selectedStore = stores.find((s) => s.id === selectedStoreId);
 
@@ -169,16 +162,6 @@ export const GroupManager: React.FC<GroupManagerProps> = ({
     }
   };
 
-  const handleToggleDistributionMode = async (mode: 'automatic' | 'manual') => {
-    if (!selectedStore) return;
-    try {
-      await api.updateStore(selectedStore.id, { distributionMode: mode });
-      onRefreshStores();
-    } catch (err: any) {
-      alert(err.message || 'Erro ao alterar modo de distribuição');
-    }
-  };
-
   const handleSetManualActiveGroup = async (groupId: string) => {
     if (!selectedStore) return;
     try {
@@ -189,22 +172,6 @@ export const GroupManager: React.FC<GroupManagerProps> = ({
       onRefreshStores();
     } catch (err: any) {
       alert(err.message || 'Erro ao definir grupo ativo');
-    }
-  };
-
-  const handleSimulate = async (count: number) => {
-    if (!selectedStore || simulating) return;
-    setSimulating(true);
-    setSimulationResult(null);
-    try {
-      const res = await api.simulateClicks(selectedStore.slug, count);
-      setSimulationResult(res.message);
-      await loadGroups(selectedStore.id);
-      onRefreshStores();
-    } catch (err: any) {
-      alert(err.message || 'Falha na simulação');
-    } finally {
-      setSimulating(false);
     }
   };
 
@@ -250,94 +217,6 @@ export const GroupManager: React.FC<GroupManagerProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Distribution Strategy Control Card */}
-      {selectedStore && (
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Lógica de Distribuição:
-                </span>
-                <span className="text-sm font-bold text-slate-900">{selectedStore.name}</span>
-              </div>
-              <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
-                {selectedStore.distributionMode === 'automatic'
-                  ? 'Modo Automático: O sistema direciona os clientes para o primeiro grupo ativo em ordem sequencial. Ao atingir o limite configurado (ex: 800 cliques), avança automaticamente para o próximo grupo no backend de forma atômica.'
-                  : 'Modo Manual: Todos os acessos são direcionados exclusivamente para o grupo selecionado por você, independentemente do limite de cliques atingido.'}
-              </p>
-            </div>
-
-            {/* Mode Toggle Controls */}
-            <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-xl shrink-0">
-              <button
-                onClick={() => handleToggleDistributionMode('automatic')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  selectedStore.distributionMode === 'automatic'
-                    ? 'bg-white text-emerald-800 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Automático (Transbordo)</span>
-              </button>
-              <button
-                onClick={() => handleToggleDistributionMode('manual')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  selectedStore.distributionMode === 'manual'
-                    ? 'bg-white text-amber-800 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <Sliders className="w-3.5 h-3.5 text-amber-600" />
-                <span>Manual (Fixo)</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Test Simulator Bar */}
-          <div className="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs bg-slate-50/70 p-3 rounded-xl">
-            <div className="flex items-center gap-2">
-              <Play className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="font-semibold text-slate-800">Testar Distribuição em Tempo Real:</span>
-              <span className="text-slate-500 hidden sm:inline">
-                Simule cliques de clientes para conferir a troca automática entre grupos
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleSimulate(1)}
-                disabled={simulating}
-                className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 font-semibold rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-              >
-                +1 Clique
-              </button>
-              <button
-                onClick={() => handleSimulate(50)}
-                disabled={simulating}
-                className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 font-semibold rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-              >
-                +50 Cliques
-              </button>
-              <button
-                onClick={() => handleSimulate(200)}
-                disabled={simulating}
-                className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-semibold rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-              >
-                +200 Cliques
-              </button>
-            </div>
-          </div>
-
-          {simulationResult && (
-            <div className="mt-2 text-xs font-medium text-emerald-700 bg-emerald-50/90 px-3 py-1.5 rounded-lg border border-emerald-200 flex items-center justify-between">
-              <span>{simulationResult}</span>
-              <span className="text-[11px] font-mono text-emerald-600">Atualizado</span>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* WhatsApp Transparency Disclaimer Notice */}
       <div className="flex items-start gap-3 p-3.5 bg-blue-50/70 border border-blue-200/70 rounded-xl text-xs text-blue-900 leading-relaxed">
