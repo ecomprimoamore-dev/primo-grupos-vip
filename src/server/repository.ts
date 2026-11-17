@@ -61,6 +61,26 @@ const mapClickEvent = (row: DbRow): ClickEvent => ({
   createdAt: row.created_at,
 });
 
+export function findNextRoutingGroup(store: Store, groups: VipGroup[]): VipGroup | undefined {
+  if (!store.isActive) return undefined;
+
+  if (store.distributionMode === 'manual') {
+    if (!store.manualActiveGroupId) return undefined;
+    const selectedGroup = groups.find((group) =>
+      group.id === store.manualActiveGroupId && group.isActive
+    );
+    return selectedGroup && selectedGroup.currentClicks < selectedGroup.clickLimit
+      ? selectedGroup
+      : undefined;
+  }
+
+  return groups
+    .filter((group) => group.storeId === store.id && group.isActive && group.currentClicks < group.clickLimit)
+    .sort((left, right) =>
+      left.displayOrder - right.displayOrder || Date.parse(left.createdAt) - Date.parse(right.createdAt)
+    )[0];
+}
+
 export class VipRepository {
   constructor(private readonly client: SupabaseClient, private readonly adminContext = false) {}
 
@@ -260,13 +280,14 @@ export class VipRepository {
     const mappedGroups = groups.map((row) => mapGroup(row));
     for (const group of mappedGroups) groupsByStore.set(group.storeId, [...(groupsByStore.get(group.storeId) || []), group]);
     const storeById = new Map(stores.map((store) => [store.id, store]));
+    const routingTargetByStore = new Map(
+      stores.map((store) => [store.id, findNextRoutingGroup(store, mappedGroups)])
+    );
     const storeMetrics = stores.map((store) => {
       const storeGroups = groupsByStore.get(store.id) || [];
       const totalAccesses = accessMap.get(store.id) || 0;
       const totalClicks = clickMap.get(store.id) || 0;
-      const activeGroup = store.distributionMode === 'manual'
-        ? storeGroups.find((group) => group.id === store.manualActiveGroupId)
-        : storeGroups.find((group) => group.isActive && group.currentClicks < group.clickLimit);
+      const activeGroup = routingTargetByStore.get(store.id);
       return {
         storeId: store.id, storeName: store.name, storeSlug: store.slug, isActive: store.isActive,
         totalAccesses, totalClicks,
@@ -278,14 +299,12 @@ export class VipRepository {
     const groupMetrics = mappedGroups.map((group) => {
       const store = storeById.get(group.storeId);
       const storeGroups = groupsByStore.get(group.storeId) || [];
-      const target = store?.distributionMode === 'manual'
-        ? store.manualActiveGroupId
-        : storeGroups.find((candidate) => candidate.isActive && candidate.currentClicks < candidate.clickLimit)?.id;
+      const target = store ? routingTargetByStore.get(store.id) : undefined;
       return {
         groupId: group.id, storeId: group.storeId, storeName: store?.name || 'Desconhecida',
         groupName: group.name, inviteUrl: group.inviteUrl, clickLimit: group.clickLimit,
         currentClicks: group.currentClicks, displayOrder: group.displayOrder, isActive: group.isActive,
-        isCurrentRoutingTarget: Boolean(store?.isActive && group.isActive && target === group.id),
+        isCurrentRoutingTarget: Boolean(group.isActive && target?.id === group.id),
         percentFull: Math.min(100, Number(((group.currentClicks / group.clickLimit) * 100).toFixed(1))),
       };
     });

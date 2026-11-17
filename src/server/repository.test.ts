@@ -3,10 +3,47 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { resolve } from 'node:path';
-import { VipRepository } from './repository';
+import { findNextRoutingGroup, VipRepository } from './repository';
+import type { Store, VipGroup } from '../types';
 
 const originalError = console.error;
 afterEach(() => { console.error = originalError; });
+
+describe('dashboard routing target selection', () => {
+  const store: Store = {
+    id: 'store-1', name: 'Barigui', slug: 'barigui', description: '', isActive: true,
+    distributionMode: 'automatic', manualActiveGroupId: null, createdAt: '', updatedAt: '',
+  };
+  const group = (overrides: Partial<VipGroup>): VipGroup => ({
+    id: 'group-default', storeId: store.id, name: 'Grupo VIP 01', inviteUrl: '',
+    clickLimit: 800, currentClicks: 0, displayOrder: 1, isActive: true,
+    createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '', ...overrides,
+  });
+
+  it('matches automatic RPC ordering by display order and creation time', () => {
+    const expected = group({ id: 'earlier-in-order', displayOrder: 1, createdAt: '2026-01-01T00:00:00.000Z' });
+    const groups = [
+      group({ id: 'later-display-order', displayOrder: 2, createdAt: '2025-01-01T00:00:00.000Z' }),
+      group({ id: 'later-created', displayOrder: 1, createdAt: '2026-02-01T00:00:00.000Z' }),
+      expected,
+      group({ id: 'full-earlier', displayOrder: 0, currentClicks: 800 }),
+      group({ id: 'inactive-earlier', displayOrder: 0, isActive: false }),
+    ];
+
+    assert.equal(findNextRoutingGroup(store, groups)?.id, expected.id);
+  });
+
+  it('uses the configured manual group only while active and below its limit', () => {
+    const manualStore: Store = { ...store, distributionMode: 'manual', manualActiveGroupId: 'manual-target' };
+    const selected = group({ id: 'manual-target', displayOrder: 4 });
+    const other = group({ id: 'first-automatic', displayOrder: 1 });
+
+    assert.equal(findNextRoutingGroup(manualStore, [other, selected])?.id, selected.id);
+    assert.equal(findNextRoutingGroup(manualStore, [other, { ...selected, currentClicks: selected.clickLimit }]), undefined);
+    assert.equal(findNextRoutingGroup(manualStore, [other, { ...selected, isActive: false }]), undefined);
+    assert.equal(findNextRoutingGroup({ ...manualStore, isActive: false }, [selected]), undefined);
+  });
+});
 
 describe('VipRepository Supabase persistence', () => {
   it('uses only public columns and strips private group fields from anonymous queries', async () => {
