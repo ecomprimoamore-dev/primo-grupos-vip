@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DashboardMetrics } from '../../types';
 import { api } from '../../services/api';
+import { orderGroupMetricsForDisplay } from './groupMetricOrdering';
 import {
   Users,
   MousePointerClick,
@@ -40,6 +41,10 @@ export const ReportsDashboard: React.FC<ReportsDashboardProps> = () => {
   useEffect(() => {
     fetchMetrics();
   }, []);
+
+  const orderedGroupMetrics = metrics
+    ? orderGroupMetricsForDisplay(metrics.groupMetrics, metrics.storeMetrics)
+    : [];
 
   return (
     <div className="space-y-6">
@@ -220,7 +225,7 @@ export const ReportsDashboard: React.FC<ReportsDashboardProps> = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {metrics.groupMetrics.map((gm) => {
+                  {orderedGroupMetrics.map((gm) => {
                     const isFull = gm.currentClicks >= gm.clickLimit;
 
                     return (

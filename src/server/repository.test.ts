@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { resolve } from 'node:path';
 import { findNextRoutingGroup, VipRepository } from './repository';
-import type { Store, VipGroup } from '../types';
+import { orderGroupMetricsForDisplay } from '../components/admin/groupMetricOrdering';
+import type { GroupMetricItem, Store, StoreMetricItem, VipGroup } from '../types';
 
 const originalError = console.error;
 afterEach(() => { console.error = originalError; });
@@ -42,6 +43,48 @@ describe('dashboard routing target selection', () => {
     assert.equal(findNextRoutingGroup(manualStore, [other, { ...selected, currentClicks: selected.clickLimit }]), undefined);
     assert.equal(findNextRoutingGroup(manualStore, [other, { ...selected, isActive: false }]), undefined);
     assert.equal(findNextRoutingGroup({ ...manualStore, isActive: false }, [selected]), undefined);
+  });
+});
+
+describe('visual ordering of VIP group metrics', () => {
+  const stores: StoreMetricItem[] = [
+    { storeId: 'patio-id', storeName: 'Pátio Batel', storeSlug: 'patio', isActive: true, totalAccesses: 0, totalClicks: 0, conversionRate: 0, activeGroupName: null, totalGroups: 2, fullGroups: 0 },
+    { storeId: 'quadrata-id', storeName: 'Quadrata', storeSlug: 'quadrata', isActive: true, totalAccesses: 0, totalClicks: 0, conversionRate: 0, activeGroupName: null, totalGroups: 2, fullGroups: 0 },
+    { storeId: 'barigui-id', storeName: 'Barigui', storeSlug: 'barigui', isActive: true, totalAccesses: 0, totalClicks: 0, conversionRate: 0, activeGroupName: null, totalGroups: 2, fullGroups: 0 },
+  ];
+  const metric = (storeSlug: string, order: number, active = false): GroupMetricItem => {
+    const store = stores.find((item) => item.storeSlug === storeSlug)!;
+    return {
+      groupId: `${storeSlug}-${order}`, storeId: store.storeId, storeName: store.storeName,
+      groupName: `Group ${order}`, inviteUrl: '', clickLimit: 800, currentClicks: 0,
+      displayOrder: order, isActive: true, isCurrentRoutingTarget: active, percentFull: 0,
+    };
+  };
+
+  it('sorts active targets first, then waiting groups by unit and configured order', () => {
+    const rows = [
+      metric('patio', 2), metric('quadrata', 1, true), metric('barigui', 2),
+      metric('patio', 1, true), metric('quadrata', 2), metric('barigui', 1, true),
+    ];
+
+    const sorted = orderGroupMetricsForDisplay(rows, stores);
+
+    assert.deepEqual(sorted.map((item) => item.groupId), [
+      'barigui-1', 'quadrata-1', 'patio-1', 'barigui-2', 'quadrata-2', 'patio-2',
+    ]);
+    assert.deepEqual(rows.map((item) => item.groupId), [
+      'patio-2', 'quadrata-1', 'barigui-2', 'patio-1', 'quadrata-2', 'barigui-1',
+    ]);
+  });
+
+  it('moves a newly active group into the active category on the next sort', () => {
+    const rows = [metric('barigui', 1, true), metric('patio', 1)];
+    const updatedRows = rows.map((item) => ({
+      ...item,
+      isCurrentRoutingTarget: item.storeId === 'patio-id',
+    }));
+
+    assert.equal(orderGroupMetricsForDisplay(updatedRows, stores)[0].groupId, 'patio-1');
   });
 });
 
